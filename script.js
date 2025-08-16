@@ -10,15 +10,19 @@ createbtn.addEventListener("click",function(event){
   }
 
   let noteElement = createNoteElement(text.value)
-  container.append(noteElement)
+  container.appendChild(noteElement)
   saveNotes();
 
   text.value=""
 })
 
-function createNoteElement(content=""){
-  let notediv = document.createElement("div")
+function createNoteElement(content="",posX=100,posY=100){
+  let notediv = document.createElement("div");
   notediv.setAttribute("class","notes")
+
+  notediv.style.left =posX+ "px"; 
+  notediv.style.top =posY+ "px";
+
   notediv.innerHTML=`
   <textarea class="note-content" readonly>${content}</textarea>
   <button class = "delete-btn">DELETE</button>
@@ -45,8 +49,40 @@ function createNoteElement(content=""){
     saveNotes()
   })
 
-  return notediv;
+  let offsetX,offsetY,isDragging = false;
+
+notediv.addEventListener("mousedown",function(event){
+  if(event.target.tagName.toLowerCase()==="textarea"|| event.target.tagName.toLowerCase()==="button")
+  {
+    return;
+  }
+  isDragging=true;
+  offsetX=event.clientX - notediv.offsetLeft;
+  offsetY=event.clientY - notediv.offsetTop;
+  notediv.style.zIndex = Date.now();
+})
+
+document.addEventListener("mousemove",function(event){
+ if(isDragging){
+  notediv.style.left = event.clientX-offsetX+"px";
+  notediv.style.top = event.clientY - offsetY+"px";
+ }
+
+
+})
+
+document.addEventListener("mouseup",function(){
+  if(isDragging){
+
+  
+  isDragging=false;
+  saveNotes();
+  }
+})
+return notediv;
 }
+
+
 
 function saveNotes(){
   var notes =[]
@@ -71,6 +107,7 @@ function loadNotes() {
     }
   }
 }
+
 
 window.addEventListener("load", loadNotes);
 
