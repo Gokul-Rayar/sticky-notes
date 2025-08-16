@@ -1,28 +1,25 @@
 
-      <input id="enter"><button onclick="add()">ADD</button>
-      <ul id = "list">
-        <li>HELO<button onclick="del(event)">DELETE</button>
-            </li>
-      </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sticky notes</title>
+  <link href="style.css"  rel="stylesheet">
+</head>
+<body>
+  <div class="container-head">
+    <h1 >STICKY NOTES</h1>
+  
+    <form>
+       <textarea id="textarea" placeholder="Content"></textarea>
+       <button id="create">Add Note</button>
+    </form>
 
+</div>
 
+<div class="container"></div>
 
-<script>
-       var input = document.getElementById("enter")
-       var ul = document.getElementById("list")
-
-       function add(){
-
-        var listitem = document.createElement("li")
-        listitem.innerHTML=input.value+"<button onclick='del(event)' >DELETE</button>"
-        ul.append(listitem)
-
-       }     
-       
-       function del(){
-        event.target.parentElement.remove()
-
-       }
-       
-
-</script>
+<script src="script.js"></script>
+</body>
+</html>
