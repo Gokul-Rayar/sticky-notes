@@ -11,14 +11,20 @@ createbtn.addEventListener("click",function(event){
 
   let noteElement = createNoteElement(text.value)
   container.appendChild(noteElement)
-  saveNotes();
+  savedNotes();
 
   text.value=""
 })
 
-function createNoteElement(content="",posX=100,posY=100){
+function createNoteElement(content="",posX=null,posY=null){
+
   let notediv = document.createElement("div");
   notediv.setAttribute("class","notes")
+
+  if(posX==null||posY==null){
+    posX=Math.floor(Math.random()*(window.innerWidth-200 ))
+    posY= Math.floor(Math.random()*(window.innerHeight -150))
+  }
 
   notediv.style.left =posX+ "px"; 
   notediv.style.top =posY+ "px";
@@ -30,7 +36,7 @@ function createNoteElement(content="",posX=100,posY=100){
 
   notediv.querySelector(".delete-btn").addEventListener("click",function(){
     notediv.remove()
-    saveNotes()
+    savedNotes()
   })
 
   notediv.querySelector(".edit-btn").addEventListener("click",function(event){
@@ -46,8 +52,9 @@ function createNoteElement(content="",posX=100,posY=100){
       notefield.setAttribute("readonly","")
       event.target.textContent="EDIT"
     }
-    saveNotes()
-  })
+    savedNotes()
+  }
+)
 
   let offsetX,offsetY,isDragging = false;
 
@@ -72,44 +79,44 @@ document.addEventListener("mousemove",function(event){
 })
 
 document.addEventListener("mouseup",function(){
-  if(isDragging){
-
-  
+  if(isDragging){ 
   isDragging=false;
-  saveNotes();
+  savedNotes();
   }
 })
 return notediv;
 }
 
+function savedNotes(){
+  let notes = [];
+  let noteElements = document.querySelectorAll(".notes");
 
+  noteElements.forEach(noteEl => {
+    let note = {
+      content: noteEl.querySelector(".note-content").value,
+      left: noteEl.style.left,
+      top: noteEl.style.top,
+    };
+    notes.push(note);
+  });
 
-function saveNotes(){
-  var notes =[]
-  var noteElements = document.querySelectorAll(".notes")
-  for(let i=0;i< noteElements.length;i++){
-
-  var note ={ notecon:noteElements[i].querySelector(".note-content").value
-    
-  };
-  notes.push(note);
-}
-localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem("notes", JSON.stringify(notes));
 }
 
 function loadNotes() {
-  var savedNotes = localStorage.getItem("notes");
+  let savedNotes = localStorage.getItem("notes");
   if (savedNotes) {
     savedNotes = JSON.parse(savedNotes);
-    for (var i = 0; i < savedNotes.length; i++) {
-      var noteData = savedNotes[i];
-      container.appendChild(createNoteElement( noteData.notecon));
-    }
+    savedNotes.forEach(noteData => {
+      
+      let left = parseInt(noteData.left) || 100;
+      let top = parseInt(noteData.top) || 100;
+      container.appendChild(createNoteElement(noteData.content, left, top));
+    });
   }
 }
 
 
 window.addEventListener("load", loadNotes);
-
 
 
