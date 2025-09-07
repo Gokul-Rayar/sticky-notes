@@ -38,13 +38,17 @@ button {
 }
 
 .container {
-  position: relative; 
+ 
   width: 100%;
   height: 100vh;
+  display:flex;
+  flex-wrap: wrap;
+  gap:10px;
+
 }
 
 .notes {
-  position: absolute;
+  position: absolute;  
   width: 200px;
   height: 150px;
   background-color: forestgreen;
@@ -53,6 +57,7 @@ button {
   box-sizing: border-box;
   cursor: grab;
 }
+
 
 .notes:active {
   cursor: grabbing;
