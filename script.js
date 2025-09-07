@@ -147,3 +147,9 @@ let notesPerRow = 5;
     }
 
     window.addEventListener("load", loadNotes);
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 64d71a5 (modified the file using fetch and database for firestore)
